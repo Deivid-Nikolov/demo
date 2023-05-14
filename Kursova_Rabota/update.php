@@ -166,7 +166,25 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     <style>
         .wrapper{
             width: 600px;
-            margin: 0 auto;
+            margin: 10px auto;
+            background-color: white;
+            border-radius: 15px;
+            padding: 10px;
+        }
+        body{
+            background-image: linear-gradient(to left bottom, #159895, #26a09b, #33a9a2, #3eb1a8, #49baae, #58c2b9, #67cac4, #76d2cf, #8fdbdf, #a8e4ec, #c2ecf7, #daf5ff);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-flow: row wrap;
+            height: 100%;
+        }
+        html{
+            height: 100%;
         }
     </style>
 </head>
@@ -225,7 +243,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                         </div>
                         <input type="hidden" name="id" value="<?php echo $id; ?>"/>
                         <input type="submit" class="btn btn-outline-primary" value="Потвърди">
-                        <a href="index.php" class="btn btn-outline-dark ml-2">Отказ</a>
+                        <a href="dashboard.php" class="btn btn-outline-dark ml-2">Отказ</a>
                     </form>
                 </div>
             </div>        
