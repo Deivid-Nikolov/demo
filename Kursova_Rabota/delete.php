@@ -79,9 +79,9 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                         <div class="alert alert-danger">
                             <input type="hidden" name="id" value="<?php echo trim($_GET["id"]); ?>"/>
                             <?php
-                                $con = mysqli_connect('localhost','root','','kursova_rabota')or die(mysqli_error());
+                                $linkk = mysqli_connect('localhost','root','','kursova_rabota')or die(mysqli_error());
                                 $p_id = trim($_GET["id"]);
-                                $user_query=mysqli_query($con,"select * from drivers where driver_id='$p_id'")or die(mysqli_error());
+                                $user_query=mysqli_query($linkk,"select * from drivers where driver_id='$p_id'")or die(mysqli_error());
                                 $row=mysqli_fetch_array($user_query); {
                             ?>
                             <p>Сигурни ли сте, че искате да изтриете служител: <b><?php echo $row["first_name"]; ?></b>?</p>

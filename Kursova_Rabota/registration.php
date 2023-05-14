@@ -22,20 +22,20 @@
 </head>
 <body>
 <?php
-    require('db.php');
+    require('config.php');
     if (isset($_REQUEST['username'])) {
 
         $username = stripslashes($_REQUEST['username']);
 
-        $username = mysqli_real_escape_string($con, $username);
+        $username = mysqli_real_escape_string($link, $username);
         $email    = stripslashes($_REQUEST['email']);
-        $email    = mysqli_real_escape_string($con, $email);
+        $email    = mysqli_real_escape_string($link, $email);
         $password = stripslashes($_REQUEST['password']);
-        $password = mysqli_real_escape_string($con, $password);
+        $password = mysqli_real_escape_string($link, $password);
         $create_datetime = date("Y-m-d H:i:s");
         $query    = "INSERT into `users` (username, password, email, create_datetime)
                      VALUES ('$username', '" . md5($password) . "', '$email', '$create_datetime')";
-        $result   = mysqli_query($con, $query);
+        $result   = mysqli_query($link, $query);
         if ($result) {
             echo "<div class='form'>
                   <h3>Вие се регистрирахте успешно.</h3><br/>

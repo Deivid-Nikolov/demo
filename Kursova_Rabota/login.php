@@ -5,6 +5,9 @@
     <title>Вход</title>
     <link rel="stylesheet" href="style.css"/>
     <style>
+        html{
+            height: 100%;
+        }
         body{
             background-image: linear-gradient(to left bottom, #159895, #26a09b, #33a9a2, #3eb1a8, #49baae, #58c2b9, #67cac4, #76d2cf, #8fdbdf, #a8e4ec, #c2ecf7, #daf5ff);
             background-repeat: no-repeat;
@@ -14,6 +17,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            height:100%;
         }
         .form{
             border-radius: 15px;
@@ -23,17 +27,17 @@
 </head>
 <body>
 <?php
-    require('db.php');
+    require('config.php');
     session_start();
     if (isset($_POST['username'])) {
         $username = stripslashes($_REQUEST['username']);
-        $username = mysqli_real_escape_string($con, $username);
+        $username = mysqli_real_escape_string($link, $username);
         $password = stripslashes($_REQUEST['password']);
-        $password = mysqli_real_escape_string($con, $password);
+        $password = mysqli_real_escape_string($link, $password);
 
         $query    = "SELECT * FROM `users` WHERE username='$username'
                      AND password='" . md5($password) . "'";
-        $result = mysqli_query($con, $query) or die(mysql_error());
+        $result = mysqli_query($link, $query) or die(mysql_error());
         $rows = mysqli_num_rows($result);
         if ($rows == 1) {
             $_SESSION['username'] = $username;

@@ -40,7 +40,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     //Потвърждаване на лиценз
     $input_category = trim($_POST['car']);
-    if(empty($input_category)){
+    if($input_category === 'none'){
         $licence_err = "Изберете валидна опция";
     }else{
         $licence = $input_category;
@@ -155,7 +155,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         <div class="form-group">
                             <label>Лиценз</label>
                             <select name="car" class="form-control">
-                                <option value="" selected disabled>ИЗБЕРЕТЕ ОПЦИЯ</option>
+                                <option value="none" selected>ИЗБЕРЕТЕ ОПЦИЯ</option>
                                 <option value="B1" <?php if ($licence === 'B1') { echo ' selected'; } ?>>B1</option>
                                 <option value="B" <?php if ($licence === 'B') { echo ' selected'; } ?>>B</option>
                                 <option value="C1" <?php if ($licence === 'C1') { echo ' selected'; } ?>>C1</option>
@@ -163,7 +163,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                 <option value="D1" <?php if ($licence === 'D1') { echo ' selected'; } ?>>D1</option>
                                 <option value="D" <?php if ($licence === 'D') { echo ' selected'; } ?>>D</option>
                             </select>
-                            <span class="invalid-feedback"><?php echo $name_err;?></span>
+                            <span class="invalid-feedback"><?php echo $licence_err;?></span>
                         </div>
                         <div class="form-group">
                             <label>ЕГН</label>
@@ -176,7 +176,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             <span class="invalid-feedback"><?php echo $address_err;?></span>
                         </div>
                         <input type="submit" class="btn btn-outline-primary" value="Потвърдете">
-                        <a href="index.php" class="btn btn-outline-dark ml-2">Отказ</a>
+                        <a href="dashboard.php" class="btn btn-outline-dark ml-2">Отказ</a>
                     </form>
                 </div>
             </div>        

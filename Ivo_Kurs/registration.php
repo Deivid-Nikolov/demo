@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css"/>
     <style>
         body{
-            background-image: linear-gradient(to left bottom, #159895, #26a09b, #33a9a2, #3eb1a8, #49baae, #58c2b9, #67cac4, #76d2cf, #8fdbdf, #a8e4ec, #c2ecf7, #daf5ff);
+            background-image: url(agenda-analysis-business-990818-1.jpg);
             background-repeat: no-repeat;
             background-position: center;
             background-attachment: fixed;
@@ -22,20 +22,20 @@
 </head>
 <body>
 <?php
-    require('db.php');
+    require('config.php');
     if (isset($_REQUEST['username'])) {
 
         $username = stripslashes($_REQUEST['username']);
 
-        $username = mysqli_real_escape_string($con, $username);
+        $username = mysqli_real_escape_string($link, $username);
         $email    = stripslashes($_REQUEST['email']);
-        $email    = mysqli_real_escape_string($con, $email);
+        $email    = mysqli_real_escape_string($link, $email);
         $password = stripslashes($_REQUEST['password']);
-        $password = mysqli_real_escape_string($con, $password);
+        $password = mysqli_real_escape_string($link, $password);
         $create_datetime = date("Y-m-d H:i:s");
         $query    = "INSERT into `users` (username, password, email, create_datetime)
                      VALUES ('$username', '" . md5($password) . "', '$email', '$create_datetime')";
-        $result   = mysqli_query($con, $query);
+        $result   = mysqli_query($link, $query);
         if ($result) {
             echo "<div class='form'>
                   <h3>Вие се регистрирахте успешно.</h3><br/>

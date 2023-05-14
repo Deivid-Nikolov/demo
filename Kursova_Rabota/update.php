@@ -194,9 +194,9 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
             <div class="row">
                 <div class="col-md-12">
                     <?php
-                        $con = mysqli_connect('localhost','root','','kursova_rabota')or die(mysqli_error());
+                        $link = mysqli_connect('localhost','root','','kursova_rabota')or die(mysqli_error());
                         $p_id = trim($_GET["id"]);
-                        $user_query=mysqli_query($con,"select * from drivers where driver_id='$p_id'")or die(mysqli_error());
+                        $user_query=mysqli_query($link,"select * from drivers where driver_id='$p_id'")or die(mysqli_error());
                         $row=mysqli_fetch_array($user_query); {
                     ?>
                     <h2 class="mt-5">Редактиране на служител: <b><?php echo $row["first_name"]; ?></b></h2>

@@ -1,5 +1,4 @@
 <?php
-
 include("auth_session.php");
 ?>
 <!DOCTYPE html>
@@ -13,45 +12,44 @@ include("auth_session.php");
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <style>
-        html{
-            height:100%;
-        }
+        
         body{
-            background-image: linear-gradient(to left bottom, #159895, #26a09b, #33a9a2, #3eb1a8, #49baae, #58c2b9, #67cac4, #76d2cf, #8fdbdf, #a8e4ec, #c2ecf7, #daf5ff);
+            background-image: url(agenda-analysis-business-990818-1.jpg);
             background-repeat: no-repeat;
             background-position: center;
             background-attachment: fixed;
             background-size: cover;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            justify-content: space-around;
+            align-items: baseline;
             flex-flow: column wrap;
             height: 100%;
         }
         .wrapper{
             margin: 0 auto;
-            margin-bottom: 20px;
             width: 90%;
             background-color: aliceblue;
             border-radius: 15px;
             box-shadow: 0 0 10px 10px whitesmoke;
+            margin-bottom: 20px;
 
         }
 
         .row table, .row th,.row td{
-            border: 5px solid #159895;
+            border: 5px solid burlywood;
             border-radius: 5px;
-            border-collapse: ;        
         }
 
         .center{
             text-align: center;
             margin:0 auto;
-            width:80%;
+            margin-bottom: 20px;
+            width:100%;
             background-color: aliceblue;
             border-radius: 10px;
             font-size: larger;
-            position: fixed;
+            position: sticky;
+            z-index: 1;
             top:0;
             padding: 10px;
             display: flex;
@@ -70,7 +68,7 @@ include("auth_session.php");
             color:white
         }
         .customized{
-            color: #159895;
+            color: burlywood;
             font-size: 2rem;
         }
     </style>
@@ -92,8 +90,8 @@ include("auth_session.php");
             <div class="row">
                 <div class="col-md-12">
                     <div class="mt-5 mb-3 clearfix">
-                        <h2 class="pull-left">Подробности за служителите</h2>
-                        <a href="create.php" class="btn btn-outline-success pull-right"><i class="fa fa-plus"></i> Добави нов служител</a>
+                        <h2 class="pull-left">Подробности за проекти</h2>
+                        <a href="create.php" class="btn btn-outline-success pull-right"><i class="fa fa-plus"></i> Добави нов проект</a>
                     </div>
                     <?php
                     // Включване на конфигурационен файл (връзка с датабазата)
@@ -108,11 +106,9 @@ include("auth_session.php");
                                     echo "<tr>";
                                         echo "<th>#</th>";
                                         echo "<th>Име</th>";
-                                        echo "<th>Презиме</th>";
-                                        echo "<th>Фамилия</th>";
-                                        echo "<th>Лиценз</th>";
-                                        echo "<th>ЕГН</th>";
-                                        echo "<th>Адрес</th>";
+                                        echo "<th>Тип</th>";
+                                        echo "<th>Описание</th>";
+                                        echo "<th>Финанси</th>";
                                         echo "<th>Прочети/Поднови/Изтрии</th>";
 
                                     echo "</tr>";
@@ -120,18 +116,16 @@ include("auth_session.php");
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
-                                        echo "<td>" . $row['driver_id'] . "</td>";
-                                        echo "<td>" . $row['first_name'] . "</td>";
-                                        echo "<td>" . $row['middle_name'] . "</td>";
-                                        echo "<td>" . $row['last_name'] . "</td>";
-                                        echo "<td>" . $row['licence'] . "</td>";
-                                        echo "<td>" . $row['citizen_number'] . "</td>";
-                                        echo "<td>" . $row['address'] . "</td>";
+                                        echo "<td>" . $row['id'] . "</td>";
+                                        echo "<td>" . $row['name'] . "</td>";
+                                        echo "<td>" . $row['type'] . "</td>";
+                                        echo "<td>" . $row['description'] . "</td>";
+                                        echo "<td>" . $row['financement'] . "</td>";
 
                                         echo "<td>";
-                                            echo '<a href="read.php?id='. $row['driver_id'] .'" class="mr-3" title="Преглед" data-toggle="tooltip"><span class="fa fa-eye"></span></a>';
-                                            echo '<a href="update.php?id='. $row['driver_id'] .'" class="mr-3" title="Редактиране" data-toggle="tooltip"><span class="fa fa-pencil"></span></a>';
-                                            echo '<a href="delete.php?id='. $row['driver_id'] .'" title="Изтриване" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
+                                            echo '<a href="read.php?id='. $row['id'] .'" class="mr-3" title="Преглед" data-toggle="tooltip"><span class="fa fa-eye"></span></a>';
+                                            echo '<a href="update.php?id='. $row['id'] .'" class="mr-3" title="Редактиране" data-toggle="tooltip"><span class="fa fa-pencil"></span></a>';
+                                            echo '<a href="delete.php?id='. $row['id'] .'" title="Изтриване" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
                                         echo "</td>";
                                     echo "</tr>";
                                 }

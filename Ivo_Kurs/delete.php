@@ -5,7 +5,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     require_once "config.php";
     
     // Подготвяне на оператор за изтриване
-    $sql = "DELETE FROM drivers WHERE driver_id = ?";
+    $sql = "DELETE FROM projects WHERE id = ?";
     
     if($stmt = mysqli_prepare($link, $sql)){
         // Свързване на променливи към подготвения оператор като параметри
@@ -29,8 +29,8 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     mysqli_stmt_close($stmt);
     
     // Пренареждане на ID-тата в базата данни
-    $sql = "ALTER TABLE drivers DROP driver_id;
-            ALTER TABLE drivers ADD driver_id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;";
+    $sql = "ALTER TABLE projects DROP id;
+            ALTER TABLE projects ADD id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;";
     mysqli_query($link, $sql);
     
     // Затваряне на връзката
@@ -53,7 +53,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body{
-            background-image: linear-gradient(to left bottom, #159895, #26a09b, #33a9a2, #3eb1a8, #49baae, #58c2b9, #67cac4, #76d2cf, #8fdbdf, #a8e4ec, #c2ecf7, #daf5ff);
+            background-image: url(agenda-analysis-business-990818-1.jpg);
             background-repeat: no-repeat;
             background-position: center;
             background-attachment: fixed;
@@ -61,7 +61,6 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-flow: column wrap;
         }
         .wrapper{
             width: 600px;
@@ -79,12 +78,12 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                         <div class="alert alert-danger">
                             <input type="hidden" name="id" value="<?php echo trim($_GET["id"]); ?>"/>
                             <?php
-                                $con = mysqli_connect('localhost','root','','ivo_kursova')or die(mysqli_error());
+                                $link = mysqli_connect('localhost','root','','ivo_kursova')or die(mysqli_error());
                                 $p_id = trim($_GET["id"]);
-                                $user_query=mysqli_query($con,"select * from drivers where driver_id='$p_id'")or die(mysqli_error());
+                                $user_query=mysqli_query($link,"select * from projects where id='$p_id'")or die(mysqli_error());
                                 $row=mysqli_fetch_array($user_query); {
                             ?>
-                            <p>Сигурни ли сте, че искате да изтриете служител: <b><?php echo $row["first_name"]; ?></b>?</p>
+                            <p>Сигурни ли сте, че искате да изтриете проект: <b><?php echo $row["name"]; ?></b>?</p>
                             <?php } ?>
                             <p>
                                 <input type="submit" value="Да" class="btn btn-outline-danger">

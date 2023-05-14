@@ -41,7 +41,7 @@ include("auth_session.php");
         .row table, .row th,.row td{
             border: 5px solid #159895;
             border-radius: 5px;
-            border-collapse: ;        
+            border-collapse: separate;        
         }
 
         .center{

@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css"/>
     <style>
         body{
-            background-image: linear-gradient(to left bottom, #159895, #26a09b, #33a9a2, #3eb1a8, #49baae, #58c2b9, #67cac4, #76d2cf, #8fdbdf, #a8e4ec, #c2ecf7, #daf5ff);
+            background-image: url(agenda-analysis-business-990818-1.jpg);
             background-repeat: no-repeat;
             background-position: center;
             background-attachment: fixed;
@@ -17,23 +17,24 @@
         }
         .form{
             border-radius: 15px;
-            box-shadow: 0 0 10px 10px white;
+            background-color: white;
+            box-shadow: 0 0 10px 10px cornsilk;
         }
     </style>
 </head>
 <body>
 <?php
-    require('db.php');
+    require('config.php');
     session_start();
     if (isset($_POST['username'])) {
         $username = stripslashes($_REQUEST['username']);
-        $username = mysqli_real_escape_string($con, $username);
+        $username = mysqli_real_escape_string($link, $username);
         $password = stripslashes($_REQUEST['password']);
-        $password = mysqli_real_escape_string($con, $password);
+        $password = mysqli_real_escape_string($link, $password);
 
         $query    = "SELECT * FROM `users` WHERE username='$username'
                      AND password='" . md5($password) . "'";
-        $result = mysqli_query($con, $query) or die(mysql_error());
+        $result = mysqli_query($link, $query) or die(mysql_error());
         $rows = mysqli_num_rows($result);
         if ($rows == 1) {
             $_SESSION['username'] = $username;
