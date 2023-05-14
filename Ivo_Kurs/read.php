@@ -66,7 +66,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
             border-radius:15px ;
         }
         body{
-            background-image: linear-gradient(to left bottom, #159895, #26a09b, #33a9a2, #3eb1a8, #49baae, #58c2b9, #67cac4, #76d2cf, #8fdbdf, #a8e4ec, #c2ecf7, #daf5ff);
+            background-image: url(agenda-analysis-business-990818-1.jpg);
             background-repeat: no-repeat;
             background-position: center;
             background-attachment: fixed;
@@ -74,11 +74,6 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-flow: column wrap;
-            height: 100%;
-        }
-        html{
-            height: 100%;
         }
     </style>
 </head>
@@ -87,22 +82,22 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-16">
-                    <h1 class="mt-5 mb-3">Преглед на служител: <b><?php echo $row["first_name"]; ?></b></h1>
+                    <h1 class="mt-5 mb-3">Преглед на проект: <b><?php echo $row["name"]; ?></b></h1>
                     <div class="form-group">
                         <label>Име</label>
                         <p><b><?php echo $name; ?></b></p>
                     </div>
                     <div class="form-group">
                         <label>Тип</label>
-                        <p><b><?php echo $middle; ?></b></p>
+                        <p><b><?php echo $type; ?></b></p>
                     </div>
                     <div class="form-group">
                         <label>Описание</label>
-                        <p><b><?php echo $last; ?></b></p>
+                        <p><b><?php echo $description; ?></b></p>
                     </div>
                     <div class="form-group">
                         <label>Финансиране</label>
-                        <p><b><?php echo $licence; ?></b></p>
+                        <p><b><?php echo $financement; ?></b></p>
                     </div>
                     <p><a href="dashboard.php" class="btn btn-outline-dark">Назад</a></p>
                 </div>

@@ -1,94 +1,60 @@
 <?php
-// Включване на конфигурационен файл (връзка с датабазата)
 require_once "config.php";
  
-// Дефиниране на променливи и инициализиране с празни стойности
-$name = $address = $middle = $last = $licence = $citizen_number = "";
-$name_err = $address_err = $middle_err = $last_err = $licence_err = $citizen_num_err = "";
+$name = $type = $description = $financement = "";
+$name_err = $description_err = $type_err = $financement_err= "";
  
-// Обработка на данни от формуляра, когато формулярът е изпратен
 if(isset($_POST["id"]) && !empty($_POST["id"])){
-    // Получаване на скрита входна стойност
     $id = $_POST["id"];
     
     if($_SERVER["REQUEST_METHOD"] == "POST"){
-        // Потвърждаване на името
         $input_name = trim($_POST["name"]);
-        if(empty($input_name)){
-            $name_err = "Моля въведете име.";
-        } elseif(!filter_var($input_name, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Zа-яА-Я]+$/u")))){
-            $name_err = "Моля въведете валидно име, съдържащо една дума, само с букви.";
-        } else{
-            $name = $input_name;
-        }
+    if(empty($input_name)){
+        $name_err = "Моля въведете име.";
+    } elseif(!filter_var($input_name, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[\p{L}\p{M}\s\-\_\.,;:]+$/u")))){
+        $name_err = "Моля въведете валидно име, съдържащо поне дума, съдържаща букви или други знаци.";
+    } else{
+        $name = $input_name;
+    }
+
+    $input_type = trim($_POST['type']);
+    if(empty($input_type) || $input_type===''){
+        $type_err = "Моля въведете валидна опция.";
+    } else{
+        $type = $input_type;
+    }
+
+    $input_description = trim($_POST["description"]);
+    if(empty($input_description)){
+        $description_err = "Моля въведете име.";
+    } elseif(!filter_var($input_description, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[\p{L}\d\s\-_[:punct:]]{0,1000}$/u")))){
+        $description_err = "Превишили сте максималното количество знаци или сте вавели невалиден знак.";
+    } else{
+        $description = $input_description;
+    }
+
+    $input_financement = trim($_POST['financement']);
+    if(empty($input_financement)){
+        $financement_err = "Изберете валидна опция";
+    } elseif(!filter_var($input_name, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[\p{L}\p{M}\s\-\_\.,;:]+$/u")))){
+        $financement_err = "Моля въведете валидно име, съдържащо поне дума, съдържаща букви или други знаци.";
+    }else{
+        $financement = $input_financement;
+    }
     
-        // Потвърждаване на Презиме
-        $input_mname = trim($_POST["mname"]);
-        if(empty($input_mname)){
-            $middle_err = "Моля въведете име.";
-        } elseif(!filter_var($input_mname, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Zа-яА-Я]+$/u")))){
-            $middle_err = "Моля въведете валидно име, съдържащо една дума, само с букви.";
-        } else{
-            $middle = $input_mname;
-        }
-    
-        // Потвърждаване на Фамилия
-        $input_lname = trim($_POST["lname"]);
-        if(empty($input_lname)){
-            $last_err = "Моля въведете име.";
-        } elseif(!filter_var($input_lname, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Zа-яА-Я]+$/u")))){
-            $last_err = "Моля въведете валидно име, съдържащо една дума, само с букви.";
-        } else{
-            $last = $input_lname;
-        }
-    
-        //Потвърждаване на лиценз
-        $input_category = trim($_POST['car']);
-        if(empty($input_category)){
-            $licence_err = "Изберете валидна опция";
-        }else{
-            $licence = $input_category;
-        }
-        
-        // Потвърждаване на адреса
-        $input_address = trim($_POST["address"]);
-        if(empty($input_address)){
-            $address_err = "Моля въведете адрес.";     
-        } else{
-            $address = $input_address;
-        }
-        
-        // Потвърждаване на заплатата
-        $input_citizen = trim($_POST["unique_num"]);
-        if(empty($input_citizen)){
-            $citizen_num_err = "Моля въведете ЕГН.";     
-        } elseif(!filter_var($input_citizen, FILTER_VALIDATE_REGEXP, array("options" => array("regexp"=> "/^[0-9]{10}$/u")))){
-            $citizen_num_err = "Моля въведете положително число, съдържащо 10 цифри от 0 до 9.";
-        } else{
-            $citizen_number = $input_citizen;
-        }
-    
-    // Проверка на грешките при въвеждане преди вмъкване в базата данни
-    if(empty($name_err) && empty($address_err) && empty($citizen_num_err) && empty($middle_err) && empty($last_err) && empty($licence_err)){
-        // Подготвяне на изявление за актуализиране
-        $sql = "UPDATE projects SET first_name=?, middle_name=?, last_name=?, licence=?, citizen_number=?, address=? WHERE id=?";
+    if(empty($name_err) && empty($description_err) && empty($type_err) && empty($financement_err)){
+        $sql = "UPDATE projects SET name=?, type=?, description=?, financement=? WHERE id=?";
          
         if($stmt = mysqli_prepare($link, $sql)){
-            // Свързване на променливи към подготвения оператор като параметри
-            mysqli_stmt_bind_param($stmt, "ssssssi", $param_name, $param_midlle, $param_last, $param_licence, $param_citizen, $param_address, $param_id);
+            mysqli_stmt_bind_param($stmt, "ssssi", $param_name, $param_type, $param_desc, $param_finance, $param_id);
             
-            // Задаване на параметри
             $param_name = $name;
-            $param_midlle = $middle;
-            $param_last = $last;
-            $param_licence = $licence;
-            $param_citizen = $citizen_number;
-            $param_address = $address;
+            $param_type = $type;
+            $param_desc = $description;
+            $param_finance = $financement;
             $param_id = $id;
             
-            // Опит за изпълнение на подготвения оператор
             if(mysqli_stmt_execute($stmt)){
-                // Записите са актуализирани успешно. Пренасочване към целевата страница
                 header("location: dashboard.php");
                 exit();
             } else{
@@ -96,45 +62,31 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
             }
         }
          
-        // приключване на заявката
         mysqli_stmt_close($stmt);
     }
     } 
-    // Затваряне на връзката
     mysqli_close($link);
 } else{
-   // Проверка на съществуването на id параметър преди по-нататъшна обработка
     if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
-        // Получаване на URL параметър
         $id =  trim($_GET["id"]);
         
-        // Подготвяне на оператор за избор
         $sql = "SELECT * FROM projects WHERE id = ?";
         if($stmt = mysqli_prepare($link, $sql)){
-            // Свързване на променливи към подготвения оператор като параметри
             mysqli_stmt_bind_param($stmt, "i", $param_id);
             
-            // Задаване на параметри
             $param_id = $id;
             
-            // Опит за изпълнение на подготвения оператор
             if(mysqli_stmt_execute($stmt)){
                 $result = mysqli_stmt_get_result($stmt);
     
                 if(mysqli_num_rows($result) == 1){
-                    /* Извличане на реда с резултати като асоциативен масив. От набора от резултати
-                    съдържа само един ред, не е необходимо да използваме цикъл while */
                     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
                     
-                    // Извличане на индивидуална стойност на полето
-                    $name = $row["first_name"];
-                    $middle = $row["middle_name"];
-                    $last = $row["last_name"];
-                    $licence = $row["licence"];
-                    $citizen_number = $row["citizen_number"];
-                    $address = $row["address"];
+                    $name = $row["name"];
+                    $type = $row["type"];
+                    $description = $row["description"];
+                    $financement = $row["financement"];
                 } else{
-                    // URL адресът не съдържа валиден идентификатор. Пренасочване към страницата за грешка
                     header("location: error.php");
                     exit();
                 }
@@ -144,13 +96,10 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
             }
         }
         
-        // Close statement
         mysqli_stmt_close($stmt);
         
-        // Close connection
         mysqli_close($link);
     }  else{
-        // URL адресът не съдържа валиден идентификатор. Пренасочване към страницата за грешка
         header("location: error.php");
         exit();
     }
@@ -172,7 +121,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
             padding: 10px;
         }
         body{
-            background-image: linear-gradient(to left bottom, #159895, #26a09b, #33a9a2, #3eb1a8, #49baae, #58c2b9, #67cac4, #76d2cf, #8fdbdf, #a8e4ec, #c2ecf7, #daf5ff);
+            background-image: url(agenda-analysis-business-990818-1.jpg);
             background-repeat: no-repeat;
             background-position: center;
             background-attachment: fixed;
@@ -180,8 +129,6 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-flow: row wrap;
-            height: 100%;
         }
         html{
             height: 100%;
@@ -199,48 +146,36 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                         $user_query=mysqli_query($link,"select * from projects where id='$p_id'")or die(mysqli_error());
                         $row=mysqli_fetch_array($user_query); {
                     ?>
-                    <h2 class="mt-5">Редактиране на служител: <b><?php echo $row["first_name"]; ?></b></h2>
+                    <h2 class="mt-5">Редактиране на проект: <b><?php echo $row["name"]; ?></b></h2>
                     <?php } ?>
                     <p>Моля редактирайте полетата, които желаете и натиснете бутона за потвърждение, за да запазите новите данни в датабазата.</p>
                     <form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
-                    <div class="form-group">
+                        <div class="form-group">
                             <label>Име</label>
                             <input type="text" name="name" class="form-control <?php echo (!empty($name_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $name; ?>">
                             <span class="invalid-feedback"><?php echo $name_err;?></span>
                         </div>
                         <div class="form-group">
-                            <label>Презиме</label>
-                            <input type="text" name="mname" class="form-control <?php echo (!empty($middle_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $middle; ?>">
-                            <span class="invalid-feedback"><?php echo $middle_err;?></span>
-                        </div>
-                        <div class="form-group">
-                            <label>Фамилия</label>
-                            <input type="text" name="lname" class="form-control <?php echo (!empty($last_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $last; ?>">
-                            <span class="invalid-feedback"><?php echo $last_err;?></span>
-                        </div>
-                        <div class="form-group">
-                            <label>Лиценз</label>
-                            <select name="car" class="form-control">
+                            <label>Тип</label>
+                            <select name="type" class="form-control">
                                 <option value="" selected disabled>ИЗБЕРЕТЕ ОПЦИЯ</option>
-                                <option value="B1" <?php if ($licence === 'B1') { echo ' selected'; } ?>>B1</option>
-                                <option value="B" <?php if ($licence === 'B') { echo ' selected'; } ?>>B</option>
-                                <option value="C1" <?php if ($licence === 'C1') { echo ' selected'; } ?>>C1</option>
-                                <option value="C" <?php if ($licence === 'C') { echo ' selected'; } ?>>C</option>
-                                <option value="D1" <?php if ($licence === 'D1') { echo ' selected'; } ?>>D1</option>
-                                <option value="D" <?php if ($licence === 'D') { echo ' selected'; } ?>>D</option>
+                                <option value="fundraising" <?php if ($type === 'fundraising') { echo ' selected'; } ?>>Fundraising</option>
+                                <option value="non-profit" <?php if ($type === 'non-profit') { echo ' selected'; } ?>>Non-profit</option>
+                                <option value="charity" <?php if ($type === 'charity') { echo ' selected'; } ?>>Charity</option>
+                                <option value="civil-league" <?php if ($type === 'civil-league') { echo ' selected'; } ?>>Civil leagues</option>
                             </select>
-                            <span class="invalid-feedback"><?php echo $name_err;?></span>
+                            <span class="invalid-feedback"><?php echo $type_err;?></span>
                         </div>
                         <div class="form-group">
-                            <label>ЕГН</label>
-                            <input type="text" name="unique_num" class="form-control <?php echo (!empty($citizen_num_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $citizen_number; ?>">
-                            <span class="invalid-feedback"><?php echo $citizen_num_err;?></span>
+                            <label>Описание</label>
+                            <textarea name="description" class="form-control <?php echo (!empty($description_err)) ? 'is-invalid' : ''; ?>"><?php echo $description; ?></textarea>
+                            <span class="invalid-feedback"><?php echo $description_err;?></span>
                         </div>
                         <div class="form-group">
-                            <label>Адрес</label>
-                            <textarea name="address" class="form-control <?php echo (!empty($address_err)) ? 'is-invalid' : ''; ?>"><?php echo $address; ?></textarea>
-                            <span class="invalid-feedback"><?php echo $address_err;?></span>
-                        </div>
+                            <label>Източник на финансиране</label>
+                            <input type="text" name="financement" class="form-control <?php echo (!empty($financement_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $financement; ?>">
+                            <span class="invalid-feedback"><?php echo $financement_err;?></span>
+                        </div>                    
                         <input type="hidden" name="id" value="<?php echo $id; ?>"/>
                         <input type="submit" class="btn btn-outline-primary" value="Потвърди">
                         <a href="dashboard.php" class="btn btn-outline-dark ml-2">Отказ</a>

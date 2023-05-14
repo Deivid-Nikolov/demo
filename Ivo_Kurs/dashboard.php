@@ -44,7 +44,7 @@ include("auth_session.php");
             margin:0 auto;
             margin-bottom: 20px;
             width:100%;
-            background-color: aliceblue;
+            background-color: beige;
             border-radius: 10px;
             font-size: larger;
             position: sticky;
