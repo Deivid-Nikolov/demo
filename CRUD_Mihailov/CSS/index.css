@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&family=Unbounded:wght@300&display=swap');
+
+:root{
+    --primary-color: #d9dcd6;
+    --secondary-color: #0b2545;
+    --terniary-color: #2f6690;
+    --background-special:conic-gradient(from 0deg at calc(500%/6) calc(100%/3),#0b2545 0 120deg,#0000 0),
+    conic-gradient(from -120deg at calc(100%/6) calc(100%/3),#2f6690 0 120deg,#0000 0),
+    conic-gradient(from 120deg at calc(100%/3) calc(500%/6),#d9dcd6 0 120deg,#0000 0),
+    conic-gradient(from 120deg at calc(200%/3) calc(500%/6),#d9dcd6 0 120deg,#0000 0),
+    conic-gradient(from -180deg at calc(100%/3) 50%,#2f6690  60deg,#d9dcd6 0 120deg,#0000 0),
+    conic-gradient(from 60deg at calc(200%/3) 50%,#d9dcd6  60deg,#0b2545 0 120deg,#0000 0),
+    conic-gradient(from -60deg at 50% calc(100%/3),#d9dcd6 120deg,#2f6690 0 240deg,#0b2545 0);
+}
+
+html{
+    font-size: 16px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-family: 'Unbounded', cursive;
+    height: 100%;
+}
+
+body{
+    background-color: var(--primary-color);
+    box-sizing: border-box;
+    padding:0;
+    margin:0;
+    height: 100%;
+}
+
+header{
+    background-color: var(--secondary-color);
+    height: 15%;
+    max-height: 7.5rem;
+    min-height: 5rem;
+    width: 100%;
+    position: sticky;
+    top:0;
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+}
+
+.mobile{
+    display: none;
+}
+
+.display{
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+}
+
+.right{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 80%;
+}
+
+.display img{
+    width: 9rem;
+    height: 3rem;
+    object-fit: contain;
+}
+
+.display ul{
+    display: inherit;
+    justify-content: space-evenly;
+    list-style-type: none;
+    width: 40%;
+}
+
+.display li>a{
+    text-decoration: none;
+    color:var(--primary-color);
+    font-weight: 500;
+}
+
+.display button{
+    border: none;
+    background-color: var(--primary-color);
+    color:var(--terniary-color);
+    width:7.5rem;
+    height:2.5rem;
+    border-radius:1rem;
+    padding:5px;
+}
+
+.display button a{
+    text-decoration: none;
+    color: var(--secondary-color);
+    font-weight: 600;
+    padding:10px
+}
