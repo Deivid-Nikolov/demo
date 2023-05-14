@@ -1,6 +1,6 @@
 <?php
 require_once "config.php";
- 
+include "auth_session.php";
 $name = $type = $description = $financement = "";
 $name_err = $description_err = $type_err = $financement_err= "";
  

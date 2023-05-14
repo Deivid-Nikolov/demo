@@ -5,7 +5,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
     require_once "config.php";
     
     // Подготвяне на оператор за избор
-    $sql = "SELECT * FROM drivers WHERE driver_id = ?";
+    $sql = "SELECT * FROM projects WHERE id = ?";
     
     if($stmt = mysqli_prepare($link, $sql)){
         // Свързване на променливи към подготвения оператор като параметри
@@ -24,12 +24,10 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
                 $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
                 
                 // Извличане на индивидуална стойност на полето
-                $name = $row["first_name"];
-                $middle = $row["middle_name"];
-                $last = $row["last_name"];
-                $licence = $row["licence"];
-                $cit_num = $row["citizen_number"];
-                $address = $row["address"];
+                $name = $row["name"];
+                $type = $row["type"];
+                $description = $row["description"];
+                $financement = $row["financement"];
             } else{
                 // URL адресът не съдържа валиден id параметър. Пренасочване към страницата за грешка
                 header("location: error.php");
@@ -95,24 +93,16 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
                         <p><b><?php echo $name; ?></b></p>
                     </div>
                     <div class="form-group">
-                        <label>Презиме</label>
+                        <label>Тип</label>
                         <p><b><?php echo $middle; ?></b></p>
                     </div>
                     <div class="form-group">
-                        <label>Фамилия</label>
+                        <label>Описание</label>
                         <p><b><?php echo $last; ?></b></p>
                     </div>
                     <div class="form-group">
-                        <label>Лиценз</label>
+                        <label>Финансиране</label>
                         <p><b><?php echo $licence; ?></b></p>
-                    </div>
-                    <div class="form-group">
-                        <label>ЕГН</label>
-                        <p><b><?php echo $cit_num; ?></b></p>
-                    </div>
-                    <div class="form-group">
-                        <label>Адрес</label>
-                        <p><b><?php echo $address; ?></b></p>
                     </div>
                     <p><a href="dashboard.php" class="btn btn-outline-dark">Назад</a></p>
                 </div>

@@ -71,7 +71,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     // Проверка на грешките при въвеждане преди вмъкване в базата данни
     if(empty($name_err) && empty($address_err) && empty($citizen_num_err) && empty($middle_err) && empty($last_err) && empty($licence_err)){
         // Подготвяне на изявление за актуализиране
-        $sql = "UPDATE drivers SET first_name=?, middle_name=?, last_name=?, licence=?, citizen_number=?, address=? WHERE driver_id=?";
+        $sql = "UPDATE projects SET first_name=?, middle_name=?, last_name=?, licence=?, citizen_number=?, address=? WHERE id=?";
          
         if($stmt = mysqli_prepare($link, $sql)){
             // Свързване на променливи към подготвения оператор като параметри
@@ -109,7 +109,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
         $id =  trim($_GET["id"]);
         
         // Подготвяне на оператор за избор
-        $sql = "SELECT * FROM drivers WHERE driver_id = ?";
+        $sql = "SELECT * FROM projects WHERE id = ?";
         if($stmt = mysqli_prepare($link, $sql)){
             // Свързване на променливи към подготвения оператор като параметри
             mysqli_stmt_bind_param($stmt, "i", $param_id);
@@ -196,7 +196,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                     <?php
                         $link = mysqli_connect('localhost','root','','ivo_kursova')or die(mysqli_error());
                         $p_id = trim($_GET["id"]);
-                        $user_query=mysqli_query($link,"select * from drivers where driver_id='$p_id'")or die(mysqli_error());
+                        $user_query=mysqli_query($link,"select * from projects where id='$p_id'")or die(mysqli_error());
                         $row=mysqli_fetch_array($user_query); {
                     ?>
                     <h2 class="mt-5">Редактиране на служител: <b><?php echo $row["first_name"]; ?></b></h2>

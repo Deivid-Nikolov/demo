@@ -13,9 +13,6 @@ include("auth_session.php");
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <style>
-        html{
-            height:100%;
-        }
         body{
             background-image: linear-gradient(to left bottom, #159895, #26a09b, #33a9a2, #3eb1a8, #49baae, #58c2b9, #67cac4, #76d2cf, #8fdbdf, #a8e4ec, #c2ecf7, #daf5ff);
             background-repeat: no-repeat;
@@ -23,19 +20,17 @@ include("auth_session.php");
             background-attachment: fixed;
             background-size: cover;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            justify-content: space-around;
+            align-items: baseline;
             flex-flow: column wrap;
             height: 100%;
         }
         .wrapper{
-            margin: 0 auto;
-            margin-bottom: 20px;
+            margin: 20px auto;
             width: 90%;
             background-color: aliceblue;
             border-radius: 15px;
             box-shadow: 0 0 10px 10px whitesmoke;
-
         }
 
         .row table, .row th,.row td{
@@ -47,11 +42,14 @@ include("auth_session.php");
         .center{
             text-align: center;
             margin:0 auto;
+            margin-bottom: 20px;
             width:80%;
             background-color: aliceblue;
+            border:2px solid #159895;
             border-radius: 10px;
             font-size: larger;
-            position: fixed;
+            position: sticky;
+            z-index: 1;
             top:0;
             padding: 10px;
             display: flex;

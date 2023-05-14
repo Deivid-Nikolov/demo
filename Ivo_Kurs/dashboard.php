@@ -32,7 +32,6 @@ include("auth_session.php");
             border-radius: 15px;
             box-shadow: 0 0 10px 10px whitesmoke;
             margin-bottom: 20px;
-
         }
 
         .row table, .row th,.row td{

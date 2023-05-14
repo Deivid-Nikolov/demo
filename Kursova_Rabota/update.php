@@ -1,6 +1,8 @@
 <?php
 // Включване на конфигурационен файл (връзка с датабазата)
 require_once "config.php";
+require_once "auth_session.php";
+
  
 // Дефиниране на променливи и инициализиране с празни стойности
 $name = $address = $middle = $last = $licence = $citizen_number = "";
