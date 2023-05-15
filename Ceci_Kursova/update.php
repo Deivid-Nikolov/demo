@@ -90,9 +90,9 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
                     
                     $name = $row["first_name"];
-                    $type = $row["second_name"];
-                    $description = $row["last_name"];
-                    $financement = $row["age"];
+                    $middle = $row["second_name"];
+                    $last = $row["last_name"];
+                    $age = $row["age"];
                 } else{
                     header("location: error.php");
                     exit();
@@ -174,7 +174,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                         </div>
                         <div class="form-group">
                             <label>Възраст</label>
-                            <input type="number" name="age" min="0" max="120" class="form-control <?php echo (!empty($age_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $age; ?>">
+                            <input type="number" name="age" min="0" class="form-control <?php echo (!empty($age_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $age; ?>">
                             <span class="invalid-feedback"><?php echo $age_err;?></span>
                         </div>
                         <input type="submit" class="btn btn-outline-primary" value="Потвърдете">
