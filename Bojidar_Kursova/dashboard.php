@@ -14,9 +14,7 @@ include("auth_session.php");
     <style>
         
         body{
-            background: repeating-linear-gradient(transparent, transparent 7.25px, #d95f5f 7.25px, #d95f5f 10.875px, transparent 10.875px, transparent 14.5px, #d95f5f 10.875px, #d95f5f 29px, transparent 29px, transparent 32.625px, #d95f5f 32.625px, #d95f5f 36.25px, transparent 36.25px, transparent 58px), repeating-linear-gradient(90deg, transparent, transparent 7.25px, #d95f5f 7.25px, #d95f5f 10.875px, transparent 10.875px, transparent 14.5px, #d95f5f 10.875px, #d95f5f 29px, transparent 29px, transparent 32.625px, #d95f5f 32.625px, #d95f5f 36.25px, transparent 36.25px, transparent 58px), #ebffe4;
-            background-blend-mode: multiply;
-            background-color: #ebffe4;
+            background-image: radial-gradient(circle, #051937, #004d7a, #008793, #00bf72, #a8eb12);
             background-position: center;
             background-attachment: fixed;
             background-size: cover;
@@ -36,7 +34,7 @@ include("auth_session.php");
         }
 
         .row table, .row th,.row td{
-            border: 5px solid red;
+            border: 5px solid lime;
             border-radius: 5px;
         }
 
@@ -68,7 +66,7 @@ include("auth_session.php");
             color:white;
         }
         .customized{
-            color: red;
+            color: green;
             font-size: 2rem;
         }
     </style>
@@ -90,37 +88,32 @@ include("auth_session.php");
             <div class="row">
                 <div class="col-md-12">
                     <div class="mt-5 mb-3 clearfix">
-                        <h2 class="pull-left">Подробности за коли</h2>
-                        <a href="create.php" class="btn btn-outline-success pull-right"><i class="fa fa-plus"></i> Добави нова кола</a>
+                        <h2 class="pull-left">Подробности за отдели</h2>
+                        <a href="create.php" class="btn btn-outline-success pull-right"><i class="fa fa-plus"></i> Добави нов отдел</a>
                     </div>
                     <?php
                     // Включване на конфигурационен файл (връзка с датабазата)
                     require_once "config.php";
                     
                     // Опит за изпълнение на заявка за избор на служители
-                    $sql = "SELECT * FROM cars";
+                    $sql = "SELECT * FROM department";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo '<table class="table table-bordered">';
                                 echo "<thead>";
                                     echo "<tr>";
                                         echo "<th>#</th>";
-                                        echo "<th>VIN</th>";
-                                        echo "<th>Модел</th>";
-                                        echo "<th>Марка</th>";
-                                        echo "<th>Регистрационен номер</th>";
-                                        echo "<th>Прочети/Поднови/Изтрии</th>";
+                                        echo "<th>Отдел</th>";
+                                        echo "<th>Мениджър</th>";
+                                        echo "<th>Действия</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
                                         echo "<td>" . $row['id'] . "</td>";
-                                        echo "<td>" . $row['vin_number'] . "</td>";
-                                        echo "<td>" . $row['model'] . "</td>";
-                                        echo "<td>" . $row['brand'] . "</td>";
-                                        echo "<td>" . $row['reg_num'] . "</td>";
-
+                                        echo "<td>" . $row['name'] . "</td>";
+                                        echo "<td>" . $row['manager'] . "</td>";
                                         echo "<td>";
                                             echo '<a href="read.php?id='. $row['id'] .'" class="mr-3" title="Преглед" data-toggle="tooltip"><span class="fa fa-eye"></span></a>';
                                             echo '<a href="update.php?id='. $row['id'] .'" class="mr-3" title="Редактиране" data-toggle="tooltip"><span class="fa fa-pencil"></span></a>';

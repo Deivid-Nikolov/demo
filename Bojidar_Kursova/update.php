@@ -2,62 +2,39 @@
 require_once "config.php";
 require_once "auth_session.php";
  
-$vin = $model = $brand = $reg_num = "";
-$vin_err = $model_err = $brand_err = $reg_num_err = "";
+$name = $manager = "";
+$name_err = $manager_err = "";
 
  
 if(isset($_POST["id"]) && !empty($_POST["id"])){
     $id = $_POST["id"];
-    
-    if($_SERVER["REQUEST_METHOD"] == "POST"){
-        $input_vin = trim($_POST["vin"]);
-    if(empty($input_vin)){
-        $vin_err = "Моля въведете VIN.";
-    } elseif(!filter_var($input_vin, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[A-HJ-NPR-Z0-9]{17}$/")))){
-        $vin_err = "Моля въведете валиден VIN.";
+
+    $input_name = trim($_POST["name"]);
+    if(empty($input_name)){
+        $name_err = "Моля въведете име.";
+    } elseif(!filter_var($input_name, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[\p{L}\d\s-]+$/u")))){
+        $name_err = "Моля въведете валидно име, съдържащо поне една дума.";
     } else{
-        $vin = $input_vin;
+        $name = $input_name;
     }
 
-    // Потвърждаване на Презиме
-    $input_brand = trim($_POST["brand"]);
-    if(empty($input_brand)){
-        $brand_err = "Моля въведете име.";
-    } elseif(!filter_var($input_brand, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[\p{L}\d\s-]+$/u")))){
-        $brand_err = "Моля въведете валидно име, съдържащо една дума, само с букви.";
+    $input_manager = trim($_POST["manager"]);
+    if(empty($input_manager)){
+        $manager_err = "Моля въведете модел.";
+    } elseif(!filter_var($input_manager, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[\p{L}\d\s-]+$/u")))){
+        $manager_err = "Моля въведете валидно име.";
     } else{
-        $brand = $input_brand;
-    }
-
-    // Потвърждаване на Фамилия
-    $input_model = trim($_POST["model"]);
-    if(empty($input_model)){
-        $model_err = "Моля въведете модел.";
-    } elseif(!filter_var($input_model, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[\p{L}\d\s-]+$/u")))){
-        $model_err = "Моля въведете валидно име.";
-    } else{
-        $model = $input_model;
-    }
-
-    $input_reg = trim($_POST["reg_num"]);
-    if(empty($input_reg)){
-        $reg_num_err = "Моля въведете регистрационен номер.";
-    } elseif(!filter_var($input_reg, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[A-Z]{2}\d{4}[A-Z]{2}$/")))){
-        $reg_num_err = "Моля въведете валидно име.";
-    } else{
-        $reg_num = $input_reg;
+        $manager = $input_manager;
     }
     
-    if(empty($vin_err) && empty($model_err) && empty($brand_err) && empty($reg_num_err)){
-        $sql = "UPDATE cars SET vin_number=?, model=?, brand=?, reg_num=? WHERE id=?";
+    if(empty($name_err) && empty($manager_err)){
+        $sql = "UPDATE department SET name=?, manager=? WHERE id=?";
          
         if($stmt = mysqli_prepare($link, $sql)){
-            mysqli_stmt_bind_param($stmt, "ssssi", $param_vin, $param_model, $param_brand, $param_reg_num, $param_id);
+            mysqli_stmt_bind_param($stmt, "ssi", $param_name, $param_manager, $param_id);
             
-            $param_vin = $vin;
-            $param_model = $model;
-            $param_brand = $brand;
-            $param_reg_num = $reg_num;
+            $param_name = $name;
+            $param_manager = $manager;
             $param_id = $id;
             
             if(mysqli_stmt_execute($stmt)){
@@ -70,13 +47,12 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
          
         mysqli_stmt_close($stmt);
     }
-    } 
     mysqli_close($link);
-} else{
+}else{
     if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
         $id =  trim($_GET["id"]);
         
-        $sql = "SELECT * FROM cars WHERE id = ?";
+        $sql = "SELECT * FROM department WHERE id = ?";
         if($stmt = mysqli_prepare($link, $sql)){
             mysqli_stmt_bind_param($stmt, "i", $param_id);
             
@@ -88,10 +64,8 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                 if(mysqli_num_rows($result) == 1){
                     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
                     
-                    $vin = $row["vin_number"];
-                    $model = $row["model"];
-                    $brand = $row["brand"];
-                    $reg_num = $row["reg_num"];
+                    $name = $row["name"];
+                    $manager = $row["manager"];
                 } else{
                     header("location: error.php");
                     exit();
@@ -127,9 +101,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
             padding: 10px;
         }
         body{
-            background: repeating-linear-gradient(transparent, transparent 7.25px, #d95f5f 7.25px, #d95f5f 10.875px, transparent 10.875px, transparent 14.5px, #d95f5f 10.875px, #d95f5f 29px, transparent 29px, transparent 32.625px, #d95f5f 32.625px, #d95f5f 36.25px, transparent 36.25px, transparent 58px), repeating-linear-gradient(90deg, transparent, transparent 7.25px, #d95f5f 7.25px, #d95f5f 10.875px, transparent 10.875px, transparent 14.5px, #d95f5f 10.875px, #d95f5f 29px, transparent 29px, transparent 32.625px, #d95f5f 32.625px, #d95f5f 36.25px, transparent 36.25px, transparent 58px), #ebffe4;
-            background-blend-mode: multiply;
-            background-color: #ebffe4;
+            background-image: radial-gradient(circle, #051937, #004d7a, #008793, #00bf72, #a8eb12);
             background-position: center;
             background-attachment: fixed;
             background-size: cover;
@@ -149,34 +121,24 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
             <div class="row">
                 <div class="col-md-12">
                     <?php
-                        $link = mysqli_connect('localhost','root','','kaloqn_kursova')or die(mysqli_error());
+                        $link = mysqli_connect('localhost','root','','bojidar_kursova')or die(mysqli_error());
                         $p_id = trim($_GET["id"]);
-                        $user_query=mysqli_query($link,"select * from cars where id='$p_id'")or die(mysqli_error());
+                        $user_query=mysqli_query($link,"select * from department where id='$p_id'")or die(mysqli_error());
                         $row=mysqli_fetch_array($user_query); {
                     ?>
-                    <h2 class="mt-5">Редактиране на данни: <b><?php echo $row["brand"]; ?></b></h2>
+                    <h2 class="mt-5">Редактиране на данни: <b><?php echo $row["name"]; ?></b></h2>
                     <?php } ?>
                     <p>Моля редактирайте полетата, които желаете и натиснете бутона за потвърждение, за да запазите новите данни в датабазата.</p>
                     <form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
                     <div class="form-group">
-                            <label>VIN</label>
-                            <input type="text" name="vin" class="form-control <?php echo (!empty($vin_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $vin; ?>">
-                            <span class="invalid-feedback"><?php echo $vin_err;?></span>
+                            <label>Отдел</label>
+                            <input type="text" name="name" class="form-control <?php echo (!empty($name_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $name; ?>">
+                            <span class="invalid-feedback"><?php echo $name_err;?></span>
                         </div>
                         <div class="form-group">
-                            <label>Модел</label>
-                            <input type="text" name="model" class="form-control <?php echo (!empty($model_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $model; ?>">
-                            <span class="invalid-feedback"><?php echo $model_err;?></span>
-                        </div>
-                        <div class="form-group">
-                            <label>Марка</label>
-                            <input type="text" name="brand" class="form-control <?php echo (!empty($brand_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $brand; ?>">
-                            <span class="invalid-feedback"><?php echo $brand_err;?></span>
-                        </div>
-                        <div class="form-group">
-                            <label>Регистрационен номер</label>
-                            <input type="text" name="reg_num" class="form-control <?php echo (!empty($reg_num_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $reg_num; ?>">
-                            <span class="invalid-feedback"><?php echo $reg_num_err;?></span>
+                            <label>Мениджър</label>
+                            <input type="text" name="manager" class="form-control <?php echo (!empty($manager_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $manager; ?>">
+                            <span class="invalid-feedback"><?php echo $manager_err;?></span>
                         </div>
                         <input type="submit" class="btn btn-outline-primary" value="Потвърдете">
                         <a href="dashboard.php" class="btn btn-outline-dark ml-2">Отказ</a>

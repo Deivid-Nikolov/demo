@@ -6,9 +6,7 @@
     <link rel="stylesheet" href="style.css"/>
     <style>
         body{
-            background: repeating-linear-gradient(transparent, transparent 7.25px, #d95f5f 7.25px, #d95f5f 10.875px, transparent 10.875px, transparent 14.5px, #d95f5f 10.875px, #d95f5f 29px, transparent 29px, transparent 32.625px, #d95f5f 32.625px, #d95f5f 36.25px, transparent 36.25px, transparent 58px), repeating-linear-gradient(90deg, transparent, transparent 7.25px, #d95f5f 7.25px, #d95f5f 10.875px, transparent 10.875px, transparent 14.5px, #d95f5f 10.875px, #d95f5f 29px, transparent 29px, transparent 32.625px, #d95f5f 32.625px, #d95f5f 36.25px, transparent 36.25px, transparent 58px), #ebffe4;
-            background-blend-mode: multiply;
-            background-color: #ebffe4;
+            background-image: radial-gradient(circle, #051937, #004d7a, #008793, #00bf72, #a8eb12);
             background-position: center;
             background-attachment: fixed;
             background-size: cover;

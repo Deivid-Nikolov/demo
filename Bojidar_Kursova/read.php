@@ -6,7 +6,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
     require_once "config.php";
     
     // Подготвяне на оператор за избор
-    $sql = "SELECT * FROM cars WHERE id = ?";
+    $sql = "SELECT * FROM department WHERE id = ?";
     
     if($stmt = mysqli_prepare($link, $sql)){
         // Свързване на променливи към подготвения оператор като параметри
@@ -25,10 +25,8 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
                 $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
                 
                 // Извличане на индивидуална стойност на полето
-                $vin = $row["vin_number"];
-                $model = $row["model"];
-                $brand = $row["brand"];
-                $reg = $row["reg_num"];
+                $name = $row["name"];
+                $manager = $row["manager"];
             } else{
                 // URL адресът не съдържа валиден id параметър. Пренасочване към страницата за грешка
                 header("location: error.php");
@@ -70,9 +68,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
             border-radius:15px;
         }
         body{
-            background: repeating-linear-gradient(transparent, transparent 7.25px, #d95f5f 7.25px, #d95f5f 10.875px, transparent 10.875px, transparent 14.5px, #d95f5f 10.875px, #d95f5f 29px, transparent 29px, transparent 32.625px, #d95f5f 32.625px, #d95f5f 36.25px, transparent 36.25px, transparent 58px), repeating-linear-gradient(90deg, transparent, transparent 7.25px, #d95f5f 7.25px, #d95f5f 10.875px, transparent 10.875px, transparent 14.5px, #d95f5f 10.875px, #d95f5f 29px, transparent 29px, transparent 32.625px, #d95f5f 32.625px, #d95f5f 36.25px, transparent 36.25px, transparent 58px), #ebffe4;
-            background-blend-mode: multiply;
-            background-color: #ebffe4;
+            background-image: radial-gradient(circle, #051937, #004d7a, #008793, #00bf72, #a8eb12);
             background-repeat: no-repeat;
             background-position: center;
             background-attachment: fixed;
@@ -89,22 +85,14 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-16">
-                    <h1 class="mt-5 mb-3">Преглед на кола: <b><?php echo $row["model"]; ?></b></h1>
+                    <h1 class="mt-5 mb-3">Преглед на кола: <b><?php echo $row["name"]; ?></b></h1>
                     <div class="form-group">
-                        <label>VIN</label>
-                        <p><b><?php echo $vin; ?></b></p>
+                        <label>Отдел</label>
+                        <p><b><?php echo $name; ?></b></p>
                     </div>
                     <div class="form-group">
-                        <label>Модел</label>
-                        <p><b><?php echo $model; ?></b></p>
-                    </div>
-                    <div class="form-group">
-                        <label>Марка</label>
-                        <p><b><?php echo $brand; ?></b></p>
-                    </div>
-                    <div class="form-group">
-                        <label>Регистрационен номер</label>
-                        <p><b><?php echo $reg; ?></b></p>
+                        <label>Мениджър</label>
+                        <p><b><?php echo $manager; ?></b></p>
                     </div>
                     <p><a href="dashboard.php" class="btn btn-outline-dark">Назад</a></p>
                 </div>

@@ -1,58 +1,39 @@
 <?php
 require_once "config.php";
 include "auth_session.php";
-$vin = $model = $brand = $reg_num = "";
-$vin_err = $model_err = $brand_err = $reg_num_err = "";
+$name = $manager = "";
+$name_err = $manager_err = "";
  
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-    $input_vin = trim($_POST["vin"]);
-    if(empty($input_vin)){
-        $vin_err = "Моля въведете VIN.";
-    } elseif(!filter_var($input_vin, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[A-HJ-NPR-Z0-9]{17}$/")))){
-        $vin_err = "Моля въведете валиден VIN.";
+
+    $input_name = trim($_POST["name"]);
+    if(empty($input_name)){
+        $name_err = "Моля въведете име.";
+    } elseif(!filter_var($input_name, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[\p{L}\d\s-]+$/u")))){
+        $name_err = "Моля въведете валидно име, съдържащо поне една дума.";
     } else{
-        $vin = $input_vin;
+        $name = $input_name;
     }
 
-    // Потвърждаване на Презиме
-    $input_brand = trim($_POST["brand"]);
-    if(empty($input_brand)){
-        $brand_err = "Моля въведете име.";
-    } elseif(!filter_var($input_brand, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[\p{L}\d\s-]+$/u")))){
-        $brand_err = "Моля въведете валидно име, съдържащо една дума, само с букви.";
+    $input_manager = trim($_POST["manager"]);
+    if(empty($input_manager)){
+        $manager_err = "Моля въведете модел.";
+    } elseif(!filter_var($input_manager, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[\p{L}\d\s-]+$/u")))){
+        $manager_err = "Моля въведете валидно име.";
     } else{
-        $brand = $input_brand;
+        $manager = $input_manager;
     }
 
-    // Потвърждаване на Фамилия
-    $input_model = trim($_POST["model"]);
-    if(empty($input_model)){
-        $model_err = "Моля въведете модел.";
-    } elseif(!filter_var($input_model, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[\p{L}\d\s-]+$/u")))){
-        $model_err = "Моля въведете валидно име.";
-    } else{
-        $model = $input_model;
-    }
-
-    $input_reg = trim($_POST["reg_num"]);
-    if(empty($input_reg)){
-        $reg_num_err = "Моля въведете регистрационен номер.";
-    } elseif(!filter_var($input_reg, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[A-Z]{2}\d{4}[A-Z]{2}$/")))){
-        $reg_num_err = "Моля въведете валидно име.";
-    } else{
-        $reg_num = $input_reg;
-    }
     
-    if(empty($vin_err) && empty($model_err) && empty($brand_err) && empty($reg_num_err)){
-        $sql = "INSERT INTO cars (vin_number, model, brand, reg_num) VALUES (?, ?, ?, ?)";
+    
+    if(empty($name_err) && empty($manager_err)){
+        $sql = "INSERT INTO department (name, manager) VALUES (?, ?)";
          
         if($stmt = mysqli_prepare($link, $sql)){
-            mysqli_stmt_bind_param($stmt, "ssss", $param_vin, $param_model, $param_brand, $param_reg_num);
+            mysqli_stmt_bind_param($stmt, "ss", $param_name, $param_manager);
             
-            $param_vin = $vin;
-            $param_model = $model;
-            $param_brand = $brand;
-            $param_reg_num = $reg_num;
+            $param_name = $name;
+            $param_manager = $manager;
             
             if(mysqli_stmt_execute($stmt)){
                 header("location: dashboard.php");
@@ -89,9 +70,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
         
         body{
-            background: repeating-linear-gradient(transparent, transparent 7.25px, #d95f5f 7.25px, #d95f5f 10.875px, transparent 10.875px, transparent 14.5px, #d95f5f 10.875px, #d95f5f 29px, transparent 29px, transparent 32.625px, #d95f5f 32.625px, #d95f5f 36.25px, transparent 36.25px, transparent 58px), repeating-linear-gradient(90deg, transparent, transparent 7.25px, #d95f5f 7.25px, #d95f5f 10.875px, transparent 10.875px, transparent 14.5px, #d95f5f 10.875px, #d95f5f 29px, transparent 29px, transparent 32.625px, #d95f5f 32.625px, #d95f5f 36.25px, transparent 36.25px, transparent 58px), #ebffe4;
-            background-blend-mode: multiply;
-            background-color: #ebffe4;
+            background-image: radial-gradient(circle, #051937, #004d7a, #008793, #00bf72, #a8eb12);
             background-position: center;
             background-attachment: fixed;
             background-size: cover;
@@ -111,25 +90,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     <p>Моля попълнете всички полета и натиснете бутона за потвърждение, за да добавиде новата кола в датабазата.</p>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                         <div class="form-group">
-                            <label>VIN</label>
-                            <input type="text" name="vin" class="form-control <?php echo (!empty($vin_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $vin; ?>">
-                            <span class="invalid-feedback"><?php echo $vin_err;?></span>
+                            <label>Отдел</label>
+                            <input type="text" name="name" class="form-control <?php echo (!empty($name_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $name; ?>">
+                            <span class="invalid-feedback"><?php echo $name_err;?></span>
                         </div>
                         <div class="form-group">
-                            <label>Модел</label>
-                            <input type="text" name="model" class="form-control <?php echo (!empty($model_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $model; ?>">
-                            <span class="invalid-feedback"><?php echo $model_err;?></span>
+                            <label>Мениджър</label>
+                            <input type="text" name="manager" class="form-control <?php echo (!empty($manager_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $manager; ?>">
+                            <span class="invalid-feedback"><?php echo $manager_err;?></span>
                         </div>
-                        <div class="form-group">
-                            <label>Марка</label>
-                            <input type="text" name="brand" class="form-control <?php echo (!empty($brand_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $brand; ?>">
-                            <span class="invalid-feedback"><?php echo $brand_err;?></span>
-                        </div>
-                        <div class="form-group">
-                            <label>Регистрационен номер</label>
-                            <input type="text" name="reg_num" class="form-control <?php echo (!empty($reg_num_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $reg_num; ?>">
-                            <span class="invalid-feedback"><?php echo $reg_num_err;?></span>
-                        </div>
+                        
                         <input type="submit" class="btn btn-outline-primary" value="Потвърдете">
                         <a href="dashboard.php" class="btn btn-outline-dark ml-2">Отказ</a>
                     </form>

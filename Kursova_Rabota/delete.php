@@ -55,7 +55,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body{
-            background-image: linear-gradient(to left bottom, #159895, #26a09b, #33a9a2, #3eb1a8, #49baae, #58c2b9, #67cac4, #76d2cf, #8fdbdf, #a8e4ec, #c2ecf7, #daf5ff);
+            background-image: radial-gradient(circle, #679289, #588c83, #48857e, #367f79, #1d7874);
             background-repeat: no-repeat;
             background-position: center;
             background-attachment: fixed;

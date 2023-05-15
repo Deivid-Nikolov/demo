@@ -6,7 +6,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     require_once "config.php";
     
     // Подготвяне на оператор за изтриване
-    $sql = "DELETE FROM cars WHERE id = ?";
+    $sql = "DELETE FROM department WHERE id = ?";
     
     if($stmt = mysqli_prepare($link, $sql)){
         // Свързване на променливи към подготвения оператор като параметри
@@ -30,8 +30,8 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     mysqli_stmt_close($stmt);
     
     // Пренареждане на ID-тата в базата данни
-    $sql = "ALTER TABLE cars DROP id;
-            ALTER TABLE cars ADD id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;";
+    $sql = "ALTER TABLE department DROP id;
+            ALTER TABLE department ADD id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;";
     mysqli_query($link, $sql);
     
     // Затваряне на връзката
@@ -54,7 +54,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body{
-            background-image: url(agenda-analysis-business-990818-1.jpg);
+            background-image: radial-gradient(circle, #051937, #004d7a, #008793, #00bf72, #a8eb12);
             background-repeat: no-repeat;
             background-position: center;
             background-attachment: fixed;
@@ -79,12 +79,12 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                         <div class="alert alert-danger">
                             <input type="hidden" name="id" value="<?php echo trim($_GET["id"]); ?>"/>
                             <?php
-                                $link = mysqli_connect('localhost','root','','kaloqn_kursova')or die(mysqli_error());
+                                $link = mysqli_connect('localhost','root','','bojidar_kursova')or die(mysqli_error());
                                 $p_id = trim($_GET["id"]);
-                                $user_query=mysqli_query($link,"select * from cars where id='$p_id'")or die(mysqli_error());
+                                $user_query=mysqli_query($link,"select * from department where id='$p_id'")or die(mysqli_error());
                                 $row=mysqli_fetch_array($user_query); {
                             ?>
-                            <p>Сигурни ли сте, че искате да изтриете проект: <b><?php echo $row["model"]; ?></b>?</p>
+                            <p>Сигурни ли сте, че искате да изтриете проект: <b><?php echo $row["name"]; ?></b>?</p>
                             <?php } ?>
                             <p>
                                 <input type="submit" value="Да" class="btn btn-outline-danger">
