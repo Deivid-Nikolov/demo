@@ -136,7 +136,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
             <div class="row">
                 <div class="col-md-12">
                     <?php
-                        $link = mysqli_connect('localhost','root','','nikola_kursova')or die(mysqli_error());
+                        $link = mysqli_connect('localhost','root','','lycezar_kursova')or die(mysqli_error());
                         $p_id = trim($_GET["id"]);
                         $user_query=mysqli_query($link,"select * from parking where id='$p_id'")or die(mysqli_error());
                         $row=mysqli_fetch_array($user_query); {

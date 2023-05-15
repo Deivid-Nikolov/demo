@@ -79,7 +79,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                         <div class="alert alert-danger">
                             <input type="hidden" name="id" value="<?php echo trim($_GET["id"]); ?>"/>
                             <?php
-                                $link = mysqli_connect('localhost','root','','nikola_kursova')or die(mysqli_error());
+                                $link = mysqli_connect('localhost','root','','lycezar_kursova')or die(mysqli_error());
                                 $p_id = trim($_GET["id"]);
                                 $user_query=mysqli_query($link,"select * from parking where id='$p_id'")or die(mysqli_error());
                                 $row=mysqli_fetch_array($user_query); {
