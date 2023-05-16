@@ -1,12 +1,13 @@
 <?php
 require_once "auth_session.php";
+
 // Операция за изтриване на процес след потвърждение
 if(isset($_POST["id"]) && !empty($_POST["id"])){
     // Включване на конфигурационен файл (връзка с датабазата)
     require_once "config.php";
     
     // Подготвяне на оператор за изтриване
-    $sql = "DELETE FROM services WHERE id = ?";
+    $sql = "DELETE FROM registered WHERE id = ?";
     
     if($stmt = mysqli_prepare($link, $sql)){
         // Свързване на променливи към подготвения оператор като параметри
@@ -30,8 +31,8 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     mysqli_stmt_close($stmt);
     
     // Пренареждане на ID-тата в базата данни
-    $sql = "ALTER TABLE services DROP id;
-            ALTER TABLE services ADD id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;";
+    $sql = "ALTER TABLE registered DROP id;
+            ALTER TABLE registered ADD id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;";
     mysqli_query($link, $sql);
     
     // Затваряне на връзката
@@ -54,9 +55,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body{
-            background-image: radial-gradient(circle at center center, #928181, #96e978), repeating-radial-gradient(circle at center center, #928181, #928181, 29px, transparent 58px, transparent 29px);
-            background-blend-mode: multiply;
-            background-color: #96e978;                 
+            background-color: brown;
             background-repeat: no-repeat;
             background-position: center;
             background-attachment: fixed;
@@ -64,6 +63,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-flow: column wrap;
         }
         .wrapper{
             width: 600px;
@@ -81,12 +81,12 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                         <div class="alert alert-danger">
                             <input type="hidden" name="id" value="<?php echo trim($_GET["id"]); ?>"/>
                             <?php
-                                $link = mysqli_connect('localhost','root','','lycezar_kursova')or die(mysqli_error());
+                                $linkk = mysqli_connect('localhost','root','','plamen_kursova')or die(mysqli_error());
                                 $p_id = trim($_GET["id"]);
-                                $user_query=mysqli_query($link,"select * from services where id='$p_id'")or die(mysqli_error());
+                                $user_query=mysqli_query($linkk,"select * from registered where id='$p_id'")or die(mysqli_error());
                                 $row=mysqli_fetch_array($user_query); {
                             ?>
-                            <p>Сигурни ли сте, че искате да изтриете проект: <b><?php echo $row["name"]; ?></b>?</p>
+                            <p>Сигурни ли сте, че искате да изтриете служител: <b><?php echo $row["first_name"]; ?></b>?</p>
                             <?php } ?>
                             <p>
                                 <input type="submit" value="Да" class="btn btn-outline-danger">

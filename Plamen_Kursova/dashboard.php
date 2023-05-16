@@ -1,4 +1,5 @@
 <?php
+
 include("auth_session.php");
 ?>
 <!DOCTYPE html>
@@ -12,11 +13,13 @@ include("auth_session.php");
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <style>
-        
         body{
-            background-image: radial-gradient(circle at center center, #928181, #96e978), repeating-radial-gradient(circle at center center, #928181, #928181, 29px, transparent 58px, transparent 29px);
-            background-blend-mode: multiply;
-            background-color: #96e978;
+            background: rgb(180,180,180);
+            background: radial-gradient(circle, rgba(180,180,180,0.8464635854341737) 0%, rgba(221,119,32,1) 35%, rgba(128,73,40,1) 61%, rgba(57,6,6,1) 100%);
+            background-size: 2em 2em;
+            background-color: #ffffff;
+            opacity: 0.9;            
+            background-repeat: no-repeat;
             background-position: center;
             background-attachment: fixed;
             background-size: cover;
@@ -27,17 +30,9 @@ include("auth_session.php");
             height: 100%;
         }
         .wrapper{
-            margin: 0 auto;
-            width: 90%;
-            background-color: snow;
-            border-radius: 15px;
-            box-shadow: 0 0 15px 15px burlywood;
-            margin-bottom: 20px;
-        }
-
-        .row table, .row th,.row td{
-            border: 5px solid burlywood;
-            border-radius: 5px;
+            margin: 20px auto;
+            width: 100%;
+            background-color: aliceblue;
         }
 
         .center{
@@ -45,8 +40,8 @@ include("auth_session.php");
             margin:0 auto;
             margin-bottom: 20px;
             width:100%;
-            background-color: white;
-            border-radius: 10px;
+            background-color: aliceblue;
+            border:2px solid brown;
             font-size: larger;
             position: sticky;
             z-index: 1;
@@ -65,10 +60,10 @@ include("auth_session.php");
         }
         button a:hover{
             text-decoration: none;
-            color:white;
+            color:white
         }
         .customized{
-            color: black;
+            color: brown;
             font-size: 2rem;
         }
     </style>
@@ -90,26 +85,29 @@ include("auth_session.php");
             <div class="row">
                 <div class="col-md-12">
                     <div class="mt-5 mb-3 clearfix">
-                        <h2 class="pull-left">Подробности</h2>
-                        <a href="create.php" class="btn btn-outline-success pull-right"><i class="fa fa-plus"></i> Добави </a>
+                        <h2 class="pull-left">Подробности за потребител</h2>
+                        <a href="create.php" class="btn btn-outline-success pull-right"><i class="fa fa-plus"></i> Добави нов служител</a>
                     </div>
                     <?php
                     // Включване на конфигурационен файл (връзка с датабазата)
                     require_once "config.php";
                     
                     // Опит за изпълнение на заявка за избор на служители
-                    $sql = "SELECT * FROM services";
+                    $sql = "SELECT * FROM registered";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo '<table class="table table-bordered">';
                                 echo "<thead>";
                                     echo "<tr>";
                                         echo "<th>#</th>";
-                                        echo "<th>Име на услуга</th>";
-                                        echo "<th>Цена</th>";
-                                        echo "<th>Описание</th>";
-                                        echo "<th>Вид</th>";
-                                        echo "<th>Прочети/Поднови/Изтрии</th>";
+                                        echo "<th>Трите Имена</th>";
+                                        echo "<th>Пол</th>";
+                                        echo "<th>Гаджосан</th>";
+                                        echo "<th>Цвят на очи</th>";
+                                        echo "<th>Имейл</th>";
+                                        echo "<th>Професия</th>";
+                                        echo "<th>Интереси</th>";
+                                        echo "<th>Действия</th>";
 
                                     echo "</tr>";
                                 echo "</thead>";
@@ -117,10 +115,13 @@ include("auth_session.php");
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
                                         echo "<td>" . $row['id'] . "</td>";
-                                        echo "<td>" . $row['name'] . "</td>";
-                                        echo "<td>" . $row['price'] . "</td>";
-                                        echo "<td>" . $row['description'] . "</td>";
-                                        echo "<td>" . $row['kind'] . "</td>";
+                                        echo "<td>" . $row['three_names'] . "</td>";
+                                        echo "<td>" . $row['gender'] . "</td>";
+                                        echo "<td>" . $row['free'] . "</td>";
+                                        echo "<td>" . $row['eye_color'] . "</td>";
+                                        echo "<td>" . $row['hair_color'] . "</td>";
+                                        echo "<td>" . $row['profesion'] . "</td>";
+                                        echo "<td>" . $row['interests'] . "</td>";
                                         echo "<td>";
                                             echo '<a href="read.php?id='. $row['id'] .'" class="mr-3" title="Преглед" data-toggle="tooltip"><span class="fa fa-eye"></span></a>';
                                             echo '<a href="update.php?id='. $row['id'] .'" class="mr-3" title="Редактиране" data-toggle="tooltip"><span class="fa fa-pencil"></span></a>';

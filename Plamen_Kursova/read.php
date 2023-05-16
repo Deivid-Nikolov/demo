@@ -6,7 +6,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
     require_once "config.php";
     
     // Подготвяне на оператор за избор
-    $sql = "SELECT * FROM services WHERE id = ?";
+    $sql = "SELECT * FROM registered WHERE id = ?";
     
     if($stmt = mysqli_prepare($link, $sql)){
         // Свързване на променливи към подготвения оператор като параметри
@@ -25,11 +25,16 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
                 $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
                 
                 // Извличане на индивидуална стойност на полето
-                $name = $row["name"];
-                $price = $row["price"];
-                $description = $row["description"];
-                $kind = $row["kind"];
-            }else{
+                $name = $row["first_name"];
+                $middle = $row["middle_name"];
+                $last = $row["last_name"];
+                $egn = $row["egn"];
+                $email = $row["email"];
+                $number = $row["number"];
+                $address = $row["address"];
+                $yearly_income = $row["yearly_income"];
+                $has_family = $row["has_family"];
+            } else{
                 // URL адресът не съдържа валиден id параметър. Пренасочване към страницата за грешка
                 header("location: error.php");
                 exit();
@@ -56,7 +61,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Преглед на паркинг</title>
+    <title>Преглед на служител</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         .wrapper{
@@ -67,9 +72,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
             border-radius:15px ;
         }
         body{
-            background-image: radial-gradient(circle at center center, #928181, #96e978), repeating-radial-gradient(circle at center center, #928181, #928181, 29px, transparent 58px, transparent 29px);
-            background-blend-mode: multiply;
-            background-color: #96e978;                 
+            background-color: brown;
             background-repeat: no-repeat;
             background-position: center;
             background-attachment: fixed;
@@ -77,6 +80,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-flow: column wrap;
             height: 100%;
         }
         html{
@@ -89,22 +93,42 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-16">
-                    <h1 class="mt-5 mb-3">Преглед: <b><?php echo $row["name"]; ?></b></h1>
+                    <h1 class="mt-5 mb-3">Преглед на служител: <b><?php echo $row["first_name"]; ?></b></h1>
                     <div class="form-group">
                         <label>Име</label>
                         <p><b><?php echo $name; ?></b></p>
                     </div>
                     <div class="form-group">
-                        <label>Цена</label>
-                        <p><b><?php echo $price; ?></b></p>
+                        <label>Презиме</label>
+                        <p><b><?php echo $middle; ?></b></p>
                     </div>
                     <div class="form-group">
-                        <label>Описание</label>
-                        <p><b><?php echo $description; ?></b></p>
+                        <label>Фамилия</label>
+                        <p><b><?php echo $last; ?></b></p>
                     </div>
                     <div class="form-group">
-                        <label>Тип</label>
-                        <p><b><?php echo $kind; ?></b></p>
+                        <label>ЕГН</label>
+                        <p><b><?php echo $egn; ?></b></p>
+                    </div>
+                    <div class="form-group">
+                        <label>Имейл</label>
+                        <p><b><?php echo $email; ?></b></p>
+                    </div>
+                    <div class="form-group">
+                        <label>Телефонен номер</label>
+                        <p><b><?php echo $number; ?></b></p>
+                    </div>
+                    <div class="form-group">
+                        <label>Адрес</label>
+                        <p><b><?php echo $address; ?></b></p>
+                    </div>
+                    <div class="form-group">
+                        <label>Доход</label>
+                        <p><b><?php echo $yearly_income; ?></b></p>
+                    </div>
+                    <div class="form-group">
+                        <label>Семейно Положение</label>
+                        <p><b><?php echo $has_family; ?></b></p>
                     </div>
                     <p><a href="dashboard.php" class="btn btn-outline-dark">Назад</a></p>
                 </div>

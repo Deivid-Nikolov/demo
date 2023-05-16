@@ -4,26 +4,7 @@
     <meta charset="utf-8"/>
     <title>Регистрация</title>
     <link rel="stylesheet" href="style.css"/>
-    <style>
-        body{
-            background-image: radial-gradient(circle at center center, #928181, #96e978), repeating-radial-gradient(circle at center center, #928181, #928181, 29px, transparent 58px, transparent 29px);
-            background-blend-mode: multiply;
-            background-color: #96e978;                 
-            background-position: center;
-            background-attachment: fixed;
-            background-size: cover;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .form{
-            background-color: snow;
-            box-shadow: 0 0 10px 10px skyblue;
-        }
-        .form > h1,h3,a,p{
-            color:black !important;
-        }
-    </style>
+
 </head>
 <body>
 <?php
@@ -43,13 +24,13 @@
         $result   = mysqli_query($link, $query);
         if ($result) {
             echo "<div class='form'>
-                  <h3>Вие се регистрирахте успешно.</h3><br/>
-                  <p class='link'>Натиснете тук за <a href='login.php'>вход</a></p>
+                  <h3 style='color:black'>Вие се регистрирахте успешно.</h3><br/>
+                  <p class='link' style='color:black'>Натиснете тук за <a href='login.php'>вход</a></p>
                   </div>";
         } else {
             echo "<div class='form'>
                   <h3>Някои от задължителните полета са празни.</h3><br/>
-                  <p class='link'>Натиснете тук за <a href='registration.php'>регистрация</a> отново.</p>
+                  <p class='link' style='color:black'>Натиснете тук за <a href='registration.php'>регистрация</a> отново.</p>
                   </div>";
         }
     } else {
@@ -57,10 +38,10 @@
     <form class="form" action="" method="post">
         <h1 class="login-title">Регистрация</h1>
         <input type="text" class="login-input" name="username" placeholder="Потребителско име" required />
-        <input type="text" class="login-input" name="email" placeholder="Имейл">
+        <input type="email" class="login-input" name="email" placeholder="Имейл">
         <input type="password" class="login-input" name="password" placeholder="Парола">
         <input type="submit" name="submit" value="Регистрация" class="login-button">
-        <p class="link">Вече имате акаунт? <a href="login.php">Вход към системата!</a></p>
+        <p class="link" style="color:black;">Вече имате акаунт? <a href="login.php">Вход към системата!</a></p>
     </form>
 <?php
     }

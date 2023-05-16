@@ -2,8 +2,8 @@
 require_once "config.php";
 require_once "auth_session.php";
  
-$name = $parking = $fee = "";
-$name_err = $parking_err = $fee_err = "";
+$name = $price = $description = $kind = "";
+$name_err = $price_err = $description_err = $kind_err = "";
  
 if(isset($_POST["id"]) && !empty($_POST["id"])){
     $id = $_POST["id"];
@@ -12,42 +12,48 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
         $input_name = trim($_POST["name"]);
     if(empty($input_name)){
         $name_err = "Моля въведете име.";
-    } elseif(!filter_var($input_name, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Zа-яА-Я]+$/u")))){
+    } elseif(!filter_var($input_name, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[\p{L}\d\s-]+$/u")))){
         $name_err = "Моля въведете валидно име, съдържащо една дума, само с букви.";
     } else{
         $name = $input_name;
     }
 
-    $input_parking = trim($_POST["parking"]);
-    if(empty($input_parking)){
-        $parking_err = "Моля въведете възрастта на пилота.";
-    }elseif(!ctype_digit($input_parking)){
-        $parking_err = "Въведете положително число.";
+    $input_price = trim($_POST["price"]);
+    if(empty($input_price)){
+        $price_err = "Моля въведете възрастта на пилота.";
+    }elseif(!ctype_digit($input_price)){
+        $price_err = "Въведете положително число.";
     }else{
-        $parking = $input_parking;
+        $price = $input_price;
     }
 
-    $input_fee = trim($_POST["fee"]);
-    if(empty($input_fee)){
-        $fee_err = "Моля въведете възрастта на пилота.";
-    }elseif(!ctype_digit($input_fee)){
-        $fee_err = "Въведете положително число.";
-    }elseif($input_age>120){
-        $fee_err = "Въведете число не по-голямо от 120.";
+    $input_description = trim($_POST["description"]);
+    if(empty($input_description)){
+        $description_err = "Моля въведете възрастта на пилота.";
+    }elseif(!filter_var($input_description, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[\p{L}\d\s-]+$/u")))){
+        $description_err = "Въведете положително число.";
     }else{
-        $fee = $input_fee;
+        $description = $input_description;
+    }
+
+    $input_kind = trim($_POST['kind']);
+    if($input_kind === 'none'){
+        $lind_err = "Изберете валидна опция";
+    }else{
+        $kind = $input_kind;
     }
     
-    if(empty($name_err) && empty($parking_err) && empty($fee_err)){
-        $sql = "UPDATE parking SET place=?, days_parking=?, fee=? WHERE id=?";
+    if(empty($name_err) && empty($price_err) && empty($description_err) && empty($kind_err)){
+        $sql = "UPDATE services SET name=?, price=?, description=?, kind=? WHERE id=?";
          
         if($stmt = mysqli_prepare($link, $sql)){
-            mysqli_stmt_bind_param($stmt, "siii", $param_name, $param_parking, $param_fee, $param_id);
+            mysqli_stmt_bind_param($stmt, "sissi", $param_name, $param_price, $param_description,$param_kind, $param_id);
             
             
             $param_name = $name;
-            $param_parking = $parking;
-            $param_fee = $fee;
+            $param_price = $price;
+            $param_description = $description;
+            $param_kind = $kind;
             $param_id = $id;
             
             if(mysqli_stmt_execute($stmt)){
@@ -66,7 +72,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
         $id =  trim($_GET["id"]);
         
-        $sql = "SELECT * FROM parking WHERE id = ?";
+        $sql = "SELECT * FROM services WHERE id = ?";
         if($stmt = mysqli_prepare($link, $sql)){
             mysqli_stmt_bind_param($stmt, "i", $param_id);
             
@@ -78,9 +84,10 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                 if(mysqli_num_rows($result) == 1){
                     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
                     
-                    $name = $row["place"];
-                    $parking = $row["days_parking"];
-                    $fee = $row["fee"];
+                    $name = $row["name"];
+                    $price = $row["price"];
+                    $description = $row["description"];
+                    $kind = $row["kind"];
                 } else{
                     header("location: error.php");
                     exit();
@@ -116,7 +123,9 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
             padding: 10px;
         }
         body{
-            background-image: linear-gradient(to right bottom, #28536b, #2f6774, #467b77, #668d7a, #8a9d80, #a2a88b, #b8b399, #cdbfa9, #d9caba, #e4d6cb, #ede3dc, #f6f0ed);
+            background-image: radial-gradient(circle at center center, #928181, #96e978), repeating-radial-gradient(circle at center center, #928181, #928181, 29px, transparent 58px, transparent 29px);
+            background-blend-mode: multiply;
+            background-color: #96e978;                 
             background-color: #b4d6e0;
             background-position: center;
             background-attachment: fixed;
@@ -138,28 +147,37 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                     <?php
                         $link = mysqli_connect('localhost','root','','lycezar_kursova')or die(mysqli_error());
                         $p_id = trim($_GET["id"]);
-                        $user_query=mysqli_query($link,"select * from parking where id='$p_id'")or die(mysqli_error());
+                        $user_query=mysqli_query($link,"select * from services where id='$p_id'")or die(mysqli_error());
                         $row=mysqli_fetch_array($user_query); {
                     ?>
-                    <h2 class="mt-5">Редактиране на данни: <b><?php echo $row["place"]; ?></b></h2>
+                    <h2 class="mt-5">Редактиране на данни: <b><?php echo $row["name"]; ?></b></h2>
                     <?php } ?>
                     <p>Моля редактирайте полетата, които желаете и натиснете бутона за потвърждение, за да запазите новите данни в датабазата.</p>
                     <form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
                     <div class="form-group">
-                            <label>Място</label>
+                            <label>Име</label>
                             <input type="text" name="name" class="form-control <?php echo (!empty($name_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $name; ?>">
-                            <span class="invalid-feedback"><?php echo $name_err;?></span>
+                            <span class="invalid-descriptiondback"><?php echo $name_err;?></span>
                         </div>
                         
                         <div class="form-group">
-                            <label>Дни Паркирано</label>
-                            <input type="number" name="parking" class="form-control <?php echo (!empty($parking_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $parking; ?>">
-                            <span class="invalid-feedback"><?php echo $parking_err;?></span>
+                            <label>Цена</label>
+                            <input type="number" name="price" class="form-control <?php echo (!empty($price_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $price; ?>">
+                            <span class="invalid-descriptiondback"><?php echo $price_err;?></span>
                         </div>
                         <div class="form-group">
-                            <label>Такса в левове</label>
-                            <input type="number" name="fee" class="form-control <?php echo (!empty($fee_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $fee; ?>">
-                            <span class="invalid-feedback"><?php echo $fee_err;?></span>
+                            <label>Описание</label>
+                            <textarea name="description" class="form-control <?php echo (!empty($description_err)) ? 'is-invalid' : ''; ?>"><?php echo $description; ?></textarea>
+                            <span class="invalid-feedback"><?php echo $description_err;?></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Лиценз</label>
+                            <select name="kind" class="form-control">
+                                <option value="none" selected>ИЗБЕРЕТЕ ОПЦИЯ</option>
+                                <option value="massage" <?php if ($kind === 'massage') { echo ' selected'; } ?>>Massage</option>
+                                <option value="hairstyle" <?php if ($kind === 'hairstyle') { echo ' selected'; } ?>>Hairstyle</option>
+                            </select>
+                            <span class="invalid-feedback"><?php echo $licence_err;?></span>
                         </div>
                         <input type="submit" class="btn btn-outline-primary" value="Потвърдете">
                         <a href="dashboard.php" class="btn btn-outline-dark ml-2">Отказ</a>

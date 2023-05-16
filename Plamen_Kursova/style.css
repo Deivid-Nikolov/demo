@@ -1,0 +1,77 @@
+html{
+    height: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:16px;
+}
+
+body{
+    background: rgb(180,180,180);
+    background: radial-gradient(circle, rgba(180,180,180,0.8464635854341737) 0%, rgba(221,119,32,1) 35%, rgba(128,73,40,1) 61%, rgba(57,6,6,1) 100%);
+        background-size: 2em 2em;
+    background-color: #ffffff;
+    opacity: 0.9;
+    background-repeat: repeat;
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:100%;
+    padding:0;
+    margin:0;
+    box-sizing: border-box;
+}
+.form{
+    border-radius: 15px;
+    background-color: white;
+    padding:15px 20px; 
+}
+h1.login-title {
+    color: black;
+    margin: 0px auto 25px;
+    font-size: 25px;
+    font-weight: 300;
+    text-align: center;
+}
+.login-input {
+    font-size: 15px;
+    border: 1px solid white;
+    padding: 10px;
+    margin-bottom: 25px;
+    height: 25px;
+    width: calc(100% - 23px);
+    background-color: aliceblue;
+}
+.login-input:focus {
+    border-color:white;
+    outline: none;
+}
+.login-button {
+    color: white;
+    background: #55a1ff;
+    border: 0;
+    outline: 0;
+    width: 100%;
+    height: 50px;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+}
+.link {
+    color: white;
+    font-size: 15px;
+    text-align: center;
+    margin-bottom: 0px;
+}
+.link a {
+    color: black;
+}
+h3 {
+   font-weight: normal;
+   text-align: center;
+   color:black
+}
+.black p{
+    color: black;
+}
